@@ -345,7 +345,6 @@ if __name__ == '__main__':
   app.run(host='0.0.0.0', port='8080')
 """
 
-web_site = Flask(__name__)
 
 
 @web_site.route('/')
@@ -368,4 +367,6 @@ def send_user_search():
     return str(e)
 
 
-web_site.run(host='0.0.0.0', port=8080)
+web_site = Flask(__name__)
+# web_site.run(host='0.0.0.0', port=8080)
+web_site.run(debug=True)

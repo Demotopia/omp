@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+      <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style type="text/css">
+      html,
+      body {
+        position: relative;
+        color: #ffffff;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        overflow: scroll;
+        overflow-x: hidden;
+      }
+
+      ::-webkit-scrollbar {
+        width: 0px;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+      }
+      /* Optional: show position indicator in red */
+      ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+      }
+
+      .main-container{
+        background-image: linear-gradient(240deg, #a6c0fe 0%, #f68084 100%);
+        //background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+        //min-height: 100vh;
+        //overflow: hidden;
+        display: block;
+        position: relative;
+        padding-bottom: 100px; /* height of footer */
+        flex: 1 0 auto;
+      }
+
+      .preloader-wrapper{
+        position: fixed;
+        left: 40%;
+        top: 5%;
+      }
+
+      #searchBarCSS{
+        margin-top: 2%;
+        margin-left: 5%;
+      }
+
+      ::-webkit-input-placeholder {
+        color: #ffffff;
+      }
+
+      :-moz-placeholder { /* Firefox 18- */
+        color: #ffffff;  
+      }
+
+      ::-moz-placeholder {  /* Firefox 19+ */
+        color: #ffffff;  
+      }
+
+      :-ms-input-placeholder {  
+        color: #ffffff;
+      }
+
+      input, select, textarea{
+        color: #ffffff;
+      }
+
+      textarea:focus, input:focus {
+        color: #ffffff;
+      }
+
+      .imageContainer{
+        position: relative;
+        left: 4.7%;
+        max-width: 400px;
+        max-height: 220px;
+      }
+
+      #songTitles{
+        display:inline-block;
+        position: relative;
+        left: 11.5%;
+      }
+      
+      #songControls{
+        position: relative;
+        left: 10%;
+        max-width: 260px;
+      }
+
+      #searchSong{  // placeholder's text in the song searchbar
+        color: #ffffff;
+      }
+      #searchArtist{  // placeholder's text in the artist searchbar
+        color: #ffffff;
+      }
+
+      #albumCover{
+        max-width: 220px;
+        max-height: 220px;
+      }
+
+      h6{  // Artist's name
+        padding-top: 15px;
+        margin-bottom: 40px;
+      }
+
+      #lyricsContainer{
+        position: absolute;
+        width: 20%;
+        max-height: 95vh;
+        top: 0;
+        right: 43%;
+        padding-right: 0;
+        padding-bottom: 0;
+        margin-left: 10px;
+        margin-right: 1%;
+        overflow: auto;
+      }
+
+      #songMeaningsContainer{
+        position: absolute;
+        width: 20%;
+        max-height: 93vh;
+        top: 0;
+        right: 23%;
+        margin-right: 0.4%;
+        padding-bottom: 0;
+        overflow: auto;
+      }
+
+      #playlistOptions{
+        background-color: #111;
+        display: block;
+        opacity: 0.7;
+        position: fixed;
+        min-width: 315px;
+        width: 22%;
+        height: 16vh;
+        top: 0;
+        right: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+      }
+
+      #playlistObj{
+        background-color: rgba(17, 17, 17, 0.7);
+        display: block;
+        position: fixed;
+        min-width: 315px;
+        width: 22%;
+        height: 77vh;
+        bottom: 4vh;
+        right: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        //overflow-y: scroll;
+        overflow: auto;
+      }
+
+      #handburgerMenuBtn{
+        display: none;
+      }
+
+      .historyBtns{
+        display: block;
+        position: fixed;
+        top: 2px;
+        margin-left: 3px;
+        margin-bottom: 5px;
+      }
+
+      .uploadPlaylist{
+        position: absolute;
+        margin-left: 5%;
+        margin-right: 5%;
+        max-width: 50px;
+        padding-right: 10px;
+        top: 0;
+        right: 7%;
+      }
+
+      #downloadPlaylist{
+        position: absolute;
+        max-width: 40px;
+        margin-left: 20px;
+        margin-right: 3%;
+        margin-top: 5px;
+        top: 0;
+        right: 3.5%;
+      }
+
+      #toast-container {  // container for toast that is generated while they last
+        top: auto !important;
+        right: 50% !important;
+      }
+
+      /* SPECIAL SCREEN SIZE ADJUSTED CSS */
+
+      @media only screen and (max-width:710px){
+        .uploadPlaylist{
+          position: fixed;
+          max-width: 50px;
+          max-height: 40px;
+          margin-left: 15px;
+          margin-bottom: 5px;
+          margin-right: 10px;
+          top: 0;
+          left: calc(38% - 50px);
+        }
+        #downloadPlaylist{
+          position: fixed;
+          max-width: 50px;
+          max-height: 40px;
+          margin-right: 15px;
+          margin-bottom: 5px;
+          margin-top: 2px;
+          top: 0;
+          left: 38%;
+        }
+        .imageContainer{
+          left: 2%;
+        }
+        #searchBarCSS{
+          margin-top: 5%;
+          margin-left: 5%;
+        }
+        #searchBarPlaylist{
+          width: 35%;
+        }
+        #songControl{
+          text-align: center;
+          margin: 0 auto;
+        }
+        #lyricsContainer{
+          min-width: 250px;
+          z-index: 1;
+        }
+        #songMeaningsContainer{
+          min-width: 250px;
+          margin-left: 10%;
+          margin-right: 1%;
+          margin-top: 35px;
+          z-index: 1;
+        }
+        #handburgerMenuBtn{
+          display: block;
+          position: fixed;
+          top: 0;
+          left: 5px;
+          font-size: 35px;
+        }
+        #playlistOptions{
+          position: fixed;
+          display: none;
+          min-width: 260px;
+          max-height: 18vh;
+          margin-top: 45px;
+          margin-bottom: 0;
+          width: 100%;
+          height: 18vh;
+          z-index: 2;
+        }
+        #playlistObj{
+          position: fixed;
+          display: none;
+          min-width: 260px;
+          width: 100%;
+          top: calc(35px + 18vh);
+          z-index: 2;
+          overflow: auto;
+        }
+        .historyBtns{
+          display: block;
+          position: fixed;
+          top: 0;
+          right: 0;
+        }
+        #toast-container{
+          top: 15% !important;
+          left: 20% !important;
+          max-width: 40% !important;
+        }
+      }
+
+      @media only screen and (max-width:1330px){
+        #lyricsContainer{
+          //display:inline-block;
+          position: relative;
+          //vertical-align:top;
+          max-width:350px;
+          min-width: 250px;
+          width: 35%;
+          margin-right: 0.5%;
+          margin-left: 10%;
+          right: 6%;
+          bottom: 15%;
+          overflow: auto;
+        }
+
+        #songMeaningsContainer{
+          //display:inline-block;
+          position: relative;
+          max-width: 350px;
+          min-width: 250px;
+          margin-left: 10%;
+          margin-right: 0.5%;
+          margin-top: 35px;
+          width: 35%;
+          right: 1%;
+          bottom: 5%;
+          overflow: auto;
+        }        
+        #songControl{
+          display:inline-block;
+          margin-left:3%;
+        }
+        #toast-container{
+          top: 15% !important;
+          right: 50% !important;
+        }
+      }
+
+    </style>
+  
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="row">
+        <div class="preloader-wrapper big" id="preloader">
+          <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="searchBarCSS">
+        <!-- Searchbars -->
+        <div class="input-field inline">
+          <i class="material-icons prefix" id="clearSearchIcon">clear</i>
+          <input placeholder="Song's name" id="searchSong" type="text" class="validate">
+        </div>
+        <div class="input-field inline">
+          <input placeholder="Artist's name" id="searchArtist" type="text" class="validate">
+        </div>
+        <a class="waves-effect waves-light btn-flat inline" id="searchIcon"><i class="material-icons large">search</i></a>
+        <!-- Handburger menu for playlist in mobile mode -->
+        <i class="material-icons" id="handburgerMenuBtn">view_comfy</i>
+
+        <!-- Playlist options: Remove from playlist, shuffle   wrap_text  remove_circle_outline-->
+        <ul class="collection playlist" id="playlistOptions">
+          <li class="collection-header center-align"><h5 id="playlistNameText" style="padding-bottom:3px;">Your Playlist</h5></li>
+          <a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Start playlist" id="playPlaylist"><i id="playPlaylistIcon" class="material-icons center white-text">play_circle_outline</i></a>
+          <a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Shuffle" id="shuffleBtn"><i class="material-icons center white-text">sort</i></a>
+          <a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Remove from playlist" id="removeFromPlaylistBtn"><i class="material-icons center white-text">remove_circle_outline</i></a>
+          <input id="searchBarPlaylist" placeholder="search playlist" type="text" style="color: #ffffff; width: 45%;" class="input-field inline">
+        </ul>
+
+        <!-- Playlist itself -->
+        <ul class="collection playlist" id="playlistObj"></ul>
+
+
+        <!-- Song Meanings and comments  col s3 offset-s6 inline -->
+        <ul class="collapsible transparent" id="lyricsContainer">
+          <li class="active">
+            <div class="collapsible-header transparent">Song Lyrics</div>
+            <div class="collapsible-body">
+              <span id="lyricsLi">Could not find the lyrics.</span>
+              <br /><br />
+              <a class="waves-effect waves-light btn-flat" id="shrinkLyricsBtn"><i class="large material-icons">eject</i></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="row">
+      </div>
+
+      <!-- Actual SongNode object in HTML -->
+      <div class="carousel imageContainer">
+        <a class="carousel-item"><img src=""></a>
+      </div>
+
+      <div id="songTitles">
+        <h4 class="tooltipped" data-position="top" data-tooltip="Reload song" id="reloadYT_Video">Song's name</h4>
+        <div>
+          <h6 class="tooltipped" data-position="left" data-tooltip="About artist" id="artistName">Artist's name</h6>
+        </div>
+      </div>
+
+      <div id="songControls">
+        <!-- Buttons for control over yt video player -->
+        <a class="waves-effect waves-light btn-flat" id="volumeDownBtn"><i class="material-icons center">remove</i></a><a class="waves-effect waves-light btn-flat" id="previousLinkBtn"><i class="material-icons center">skip_previous</i></a><a class="waves-effect waves-light btn-flat" id="playPauseBtn"><i class="material-icons center">play_arrow</i></a><a class="waves-effect waves-light btn-flat" id="nextLinkBtn"><i class="material-icons center">skip_next</i></a><a class="waves-effect waves-light btn-flat" id="volumeUpBtn"><i class="material-icons center">add</i></a>
+
+        <!-- Additional buttons (skip 10secs, recommend, add to playlist) -->
+        <div><a class="waves-effect waves-light btn-flat" id="rewind10SecBtn"><i class="material-icons center">replay_10</i></a><a class="waves-effect waves-light btn-flat" id="putCurSongOnRepeat"><i class="material-icons center">repeat</i></a><a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Recommend song" id="recommendSong"><i class="material-icons center">lightbulb_outline</i></a><a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Add to playlist" id="addToPlaylist"><i class="material-icons center">playlist_add</i></a><a class="waves-effect waves-light btn-flat" id="forward10SecBtn"><i class="material-icons center">forward_10</i></a></div>
+      </div>
+
+      <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+      <div id="player"></div>
+
+
+      <!-- Song Meanings/Comments -->
+      <ul class="collapsible transparent" id="songMeaningsContainer">
+        <li class="active">
+          <div class="collapsible-header transparent">Song Meaning</div>
+          <div class="collapsible-body"><span>There were no comments found that are related to the song's meaning.</span></div>
+        </li>
+        <li>
+          <div class="collapsible-header transparent">General Comment</div>
+          <div class="collapsible-body"><span>Didn't find any more comments that are related to this song's meaning.</span></div>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- History buttons -->
+    <div class="historyBtns">
+      <a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Previous in history" id="lastHistoryBtn"><i class="material-icons right" style="color:white;">arrow_back</i></a><a class="waves-effect waves-light btn-flat tooltipped" data-position="bottom" data-tooltip="Next in history" id="nextHistoryBtn"><i class="material-icons left" style="color:white;">arrow_forward</i></a>
+    </div>
+
+    <!-- Basically a footer -->
+    <div id="footer" class="light-blue lighten-2" style="position: fixed;bottom:0;width:100%;z-index:3;">
+      <div class="container center-align" style="padding-top: 11px;padding-bottom: 10px;font-size: 18px;">
+      Made by Aleksandar Radenkovic<a href="https://repl.it/@GrinInTheBin" target="_blank"></a>
+        <form action="#" class="uploadPlaylist">
+          <div class="file-field inline input-field" style="margin-top: 0; padding-top: 0; max-width: 50px; max-height:40px;">
+            <div class="btn transparent tooltipped z-depth-0" data-position="left" data-tooltip="Load in a playlist">
+              <i class="material-icons">cloud_upload</i>
+              <input type="file" multiple id="uploadPlaylistInput">
+            </div>
+            <div class="file-path-wrapper" style="width: 10px;">
+              <input class="file-path validate" type="text">
+            </div>
+          </div>
+        </form>
+        <a id="downloadPlaylist" class="btn transparent z-depth-0 tooltipped" data-position="top" data-tooltip="Download this playlist">
+          <i class="material-icons">cloud_download</i>
+        </a>
+      </div>
+    </div>
+
+  </body>
+
+  <script>
+    // =======================================================
+    // HTML elements
+    let mainContainer = document.getElementsByClassName('main-container')[0];
+
+    // Next/last song played
+    let nextHistoryBtn = document.getElementById('nextHistoryBtn');
+    let lastHistoryBtn = document.getElementById('lastHistoryBtn');
+    nextHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+    lastHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+
+    // Preloader
+    let preloaderObj = document.getElementById('preloader');
+
+    // Searchbar HTML elements
+    let clearSearchIcon = document.getElementById('clearSearchIcon');
+    let searchBarSong = document.getElementById('searchSong');
+    let searchBarArtist = document.getElementById('searchArtist');
+    let searchButton = document.getElementById('searchIcon');
+
+
+    // Song node HTML elements:
+    let carouselObj;  // materialize's object
+    let carouselTag = document.getElementsByClassName('carousel')[0];  // html container
+    let albumCoverImage = document.getElementById('albumCover');
+
+    let reloadYT_Video = document.getElementById('reloadYT_Video');  // name of the song and a failsafe which enables song reload
+    let artistName = document.getElementById('artistName');
+
+    let volumeUpBtn = document.getElementById('volumeUpBtn');
+    let volumeDownBtn = document.getElementById('volumeDownBtn');
+
+    let playPauseBtn = document.getElementById('playPauseBtn');
+    let playPauseIcon = playPauseBtn.children[0];
+
+    let nextLinkBtn = document.getElementById('nextLinkBtn');    
+    let previousLinkBtn = document.getElementById('previousLinkBtn');
+
+    let forward10SecBtn = document.getElementById('forward10SecBtn');
+    let rewind10SecBtn = document.getElementById('rewind10SecBtn');
+  
+    let putCurSongOnRepeat = document.getElementById('putCurSongOnRepeat');
+
+    let recommendSongBtn = document.getElementById('recommendSong');
+
+    // Lyrics and meanings:
+    let lyricsText =  document.getElementById('lyricsLi'); // actual lyrics text <li> with both title and content
+    let lyricsContainer;  // materialize's object used for moving <li> tags up
+    let shrinkLyricsBtn = document.getElementById("shrinkLyricsBtn");
+
+    let songMeaningsContainer = document.getElementById("songMeaningsContainer");
+
+
+    // Playlist
+    let playlistNameText = document.getElementById('playlistNameText');
+
+    let removeFromPlaylistBtn = document.getElementById('removeFromPlaylistBtn');
+    let shuffleBtn = document.getElementById('shuffleBtn');
+    let addToPlaylistBtn = document.getElementById('addToPlaylist');
+    let playlistObj = document.getElementById('playlistObj');
+    let playPlaylistBtn = document.getElementById('playPlaylist');
+    let searchBarPlaylist = document.getElementById('searchBarPlaylist');
+
+    let uploadPlaylistInput = document.getElementById('uploadPlaylistInput');
+    let downloadPlaylistBtn = document.getElementById('downloadPlaylist');
+
+    let handburgerMenuBtn = document.getElementById('handburgerMenuBtn');  // for mobile view
+
+    // DATA
+    let activeSongNode;  // currently displayed and used SongNode object
+
+    let playlist = [];  // Array of SongNode objects
+    let historyLL;  // linked list object that stores previously played songs
+    let maxHistorySize = 0.45;  // 45% of playlists size
+
+    let songInPlaylistIdx = 0;
+    let inPlaylist = false;
+    let insideYT_Playlist = false;
+
+    let searchSongNodesArr = [];  // Array of SongNode objects
+    let songInSearchIdx = 0;  // Index among songs returned for current search
+
+    let toRepeatOnceInPlaylist = new Map();  // keep track of songs to repeat one more time in playlist
+
+    let isRecommending = false;  // bool to keep track of recommending songs
+
+    let isUploading = false;
+
+    let isSearchingInPlaylist = false;
+
+    // YT Player related variables
+    let volumeChangeStep = 10;
+    let cur_player;  // YT Player object
+
+
+
+    // =====================================================================
+    // Changing background colour
+
+    function changeBackgroundColour() {
+      console.log("Changing background colour");
+      let colourIdx = Math.floor(Math.random() * 13);
+      let rndColourAngle = Math.floor(Math.random() * 360);
+      
+      switch(colourIdx) {
+        case 1:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #874da2 0%, #c43a30 100%)";
+          break;
+        case 2:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #ff5858 0%, #f09819 100%)";
+          break;
+        case 3:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #f43b47 0%, #453a94 100%)";
+          break;
+        case 4:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898";
+          break;
+        case 5:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%)";
+          break;
+        case 6:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #37ecba 0%, #72afd3 100%)";
+          break;
+        case 7:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #9890e3 0%, #b1f4cf 100%)";
+          break;
+        case 8:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #5ee7df 0%, #b490ca 100%)";
+          break;
+        case 9:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #fa709a 0%, #fee140 100%)";
+          break;
+        case 10:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #84fab0 0%, #8fd3f4 100%)";
+          break;
+        case 11:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg,  #ff9a9e 0%, #fecfef 99%, #fecfef 100%)";
+          break;
+        case 12:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%";
+          break;
+        default:
+          mainContainer.style.backgroundImage = "linear-gradient(" + rndColourAngle.toString() + "deg, #a6c0fe 0%, #f68084 100%)";
+          break;
+      }
+    }
+
+
+    // =====================================================================
+    // Song node object and its data
+    class SongNode {
+      constructor(songName, artistName, wikiAboutArtistURL, similiarArtists, songMeaningsVotes, songMeanings, songLyrics, yt_VideoID, albumCoverLink) {
+        this._songName = songName;
+        this._artistName = artistName;
+        this._wikiAboutArtistURL  = wikiAboutArtistURL;
+        this._similiarArtists = similiarArtists;
+        this._songMeaningsVotes = songMeaningsVotes;
+        this._songMeanings = songMeanings;
+        this._songLyrics = songLyrics;
+        this._yt_VideoID = yt_VideoID;
+        this._albumCoverLink = albumCoverLink;
+        this._specifiedVolume = 40;  // personally better than 50
+        this._specifiedStartAtTime = 0;  // in seconds
+      }
+
+      // getters
+      get name() {
+        return this._name;
+      }
+
+      get artistName() {
+        return this._artistName;
+      }
+
+      get wikiAboutArtistURL() {
+        return this._wikiAboutArtistURL;
+      }
+
+      get similiarArtists() {
+        return this._similiarArtists;
+      }
+
+      get songMeaningsVotes() {
+        return this._songMeaningsVotes;
+      }
+
+      get songMeanings() {
+        return this._songMeanings;
+      }
+
+      get songLyrics() {
+        return this._songLyrics;
+      }
+
+      get yt_VideoID() {
+        return this._yt_VideoID;
+      }
+
+      get albumCoverLink() {
+        return this._albumCoverLink;
+      }
+
+      // setters:
+      specifyVolume(volume) {
+        this._specifiedVolume = volume;
+      }
+
+      specifyStartAtTime(time) {
+        this._specifiedStartAtTime = time;
+      }
+
+    }
+
+    // =====================================================================
+    // Doubly Linked List for history
+    class LinkedListNode {
+      constructor(data) {
+        this._data = data;
+        this._next = null;
+        this._previous = null;
+      }
+    }
+
+    class LinkedList {
+      constructor() {
+        this._head = null;
+        this._currentlyUsed = null;
+      }
+
+      append(data) {
+        if(this._head === null || typeof this._head === 'undefined') {
+          this._head = new LinkedListNode(data);
+          this._currentlyUsed = this._head;
+          nextHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+          lastHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+          return;
+        }
+
+        this._currentlyUsed._next = new LinkedListNode(data);
+        this._currentlyUsed._next._previous = this._currentlyUsed;
+        this._currentlyUsed = this._currentlyUsed._next;
+        nextHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+        lastHistoryBtn.className = "waves-effect waves-light btn-flat tooltipped";
+
+        // make sure list does not contain more than max num of songs
+        let length = 1;
+        let start = this._head;
+        while(start._next !== null && typeof start._next !== 'undefined') {
+          start = start._next;
+          length++;
+        }
+        let tmp_maxHistorySize = Math.floor(playlist.length * maxHistorySize);
+        if (playlist.length < 20) {
+          tmp_maxHistorySize = Math.floor(playlist.length * 0.85);
+        } else if (tmp_maxHistorySize > 45) {
+          tmp_maxHistorySize = 50;
+        }
+        if(length <= tmp_maxHistorySize) {
+          return;
+        }
+        for(let i = length; i > tmp_maxHistorySize; i--) {
+          this._head = this._head._next;
+          this._head._previous = null;
+        }
+      }
+
+      moveToPreviousHistoryNode() {  // button is disabled already if there is no previous
+        // firstly enable buttons, no need to check for next since it leads to current
+        if(this._currentlyUsed._previous !== this._head) {
+          lastHistoryBtn.className = "waves-effect waves-light btn-flat tooltipped";
+        } else {
+          lastHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+        }
+        nextHistoryBtn.className = "waves-effect waves-light btn-flat tooltipped";
+        this._currentlyUsed = this._currentlyUsed._previous;
+        /*activeSongNode = this._currentlyUsed._data;
+        loadSongNode();*/
+      }
+
+      moveToNextHistoryNode() {
+        if(typeof this._currentlyUsed._next._next !== 'undefined' && this._currentlyUsed._next._next !== null) {
+          nextHistoryBtn.className = "waves-effect waves-light btn-flat tooltipped";
+        } else {
+          nextHistoryBtn.className = "waves-effect waves-light btn-flat disabled tooltipped";
+        }
+        lastHistoryBtn.className = "waves-effect waves-light btn-flat tooltipped";
+        this._currentlyUsed = this._currentlyUsed._next;
+      }
+
+    }
+    // assigning to the object
+    historyLL  = new LinkedList();
+
+
+    // =====================================================================
+    // Materialize's javascript on HTML objects
+    document.addEventListener('DOMContentLoaded', function() {
+      // adding collapsibles
+      var elems = document.querySelectorAll('.collapsible');
+      var instances = M.Collapsible.init(elems, {});
+      var tmp_lyricsContainer = M.Collapsible.getInstance(document.querySelector('#lyricsContainer'));
+      lyricsContainer = tmp_lyricsContainer;
+      // adding tooltips
+      var tooltips = document.querySelectorAll('.tooltipped');
+      var instances = M.Tooltip.init(tooltips, {});
+      // add the carousel
+      var carousel = document.querySelectorAll('.carousel');
+      var instances_carousel = M.Carousel.init(carousel, {
+        noWrap: true
+      });
+      carouselObj = M.Carousel.getInstance(carouselTag);
+      carouselTag.style.display = "none";
+    });
+
+
+    // =====================================================================
+    // YouTube player functinonality:
+
+    function onYouTubeIframeAPIReady() {
+      console.log("YouTube iframe ready.");
+      cur_player = createPlayer("dQw4w9WgXcQ");
+      shrinkLyricsBtn.style.display = "none";
+    }
+
+    function createPlayer(link_id, old_player) {
+      if(typeof old_player !== 'undefined') {
+        old_player.destroy();
+      }
+      let player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: link_id,
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange,
+          'onError': onPlayerError
+        }
+      });
+      return player;
+    }
+
+    function onPlayerReady(event) {
+      event.target.playVideo();
+      // pause the song that is played when new YT player is created
+      if(typeof activeSongNode === 'undefined' || activeSongNode === 'undefined') {
+        event.target.pauseVideo();
+        return;
+      }
+      event.target.setPlaybackQuality("small");
+      if (!insideYT_Playlist) {  // if in YT playlist keep the volume of previous song
+        setTimeout(function() {
+          event.target.setVolume(activeSongNode._specifiedVolume);
+          console.log(`This song's pre-set volume is: ${activeSongNode._specifiedVolume}`);
+        }, 2500);
+      }
+      console.log("Player Ready: video is ready to play.");
+    }
+
+    function onPlayerStateChange(event) {
+      switch(event.target.getPlayerState()) {
+        case 0:  // reached end of video
+          console.log("Video ended.");
+          if(insideYT_Playlist) {  // do nothing
+            return;
+          }
+          if(!inPlaylist) {
+            if(putCurSongOnRepeat.children[0].innerHTML === 'all_inclusive') {
+              playPause();
+            } else {
+              playPauseIcon.innerHTML = "replay";
+            }
+          } else {
+            // check if the song is suppost to be repeated once
+            if(toRepeatOnceInPlaylist.has(songInPlaylistIdx)) {
+              toRepeatOnceInPlaylist.get(songInPlaylistIdx).innerHTML = "repeat";
+              toRepeatOnceInPlaylist.delete(songInPlaylistIdx);
+              loadSongNode();
+              return;
+            }
+            
+            if(songInPlaylistIdx === playlist.length - 1 && shuffleBtn.children[0].innerHTML !== 'shuffle') {  // if its the end of playlist
+              playPauseIcon.innerHTML = "replay";
+            }
+            nextSong();
+          }
+          break;
+        case 1:  // currently playing
+          playPauseIcon.innerHTML = 'pause';
+          break;
+        case 2:  // now it is paused
+          playPauseIcon.innerHTML = 'play_arrow';
+          break;
+        default:
+          break;
+      }
+    }
+
+    function onPlayerError(event) {
+      M.toast({html: 'YouTube could not load the song. Moving on to the next one.'});
+      setTimeout(function() {
+        nextSong();
+      }, 2200);
+    }
+
+
+    // =============================================
+    // Control over YT player:
+    function volumeUp() {
+      if(typeof cur_player === 'undefined') {
+        console.log("Has not yet loaded the video.");
+        return;
+      }
+      let curVolume = cur_player.getVolume();
+      if(curVolume + volumeChangeStep > 100) {
+        cur_player.setVolume(100);
+        console.log("Volume is at its maximum, cannot increase any more.");
+        M.toast({html: "Volume is at maximum", classes: 'rounded'});
+        return;
+      }
+      curVolume += volumeChangeStep;
+      cur_player.setVolume(curVolume);
+    }
+
+    function volumeDown() {
+      if(typeof cur_player === 'undefined') {
+        console.log("Has not yet loaded the video.");
+        return;
+      }
+      let curVolume = cur_player.getVolume();
+      if(curVolume - volumeChangeStep <= 0) {
+        cur_player.setVolume(0);
+        console.log("Volume is at its minimum - muted, cannot decrease any more.");
+        M.toast({html: "Volume is at its minimum", classes: 'rounded'});
+        return;
+      }
+      curVolume -= volumeChangeStep;
+      cur_player.setVolume(curVolume);
+    }
+
+    function playPause() {
+      if(typeof cur_player === 'undefined') {
+        console.log("Has not yet loaded the video.");
+        alert("Has not yet loaded the video.");
+        return;
+      }
+      if(cur_player.getPlayerState() === 1){  // playing currently
+        cur_player.pauseVideo();
+      } else {
+        cur_player.playVideo();
+      }
+    }
+
+    function nextSong() {
+      if(!inPlaylist && songInSearchIdx === searchSongNodesArr.length - 1) {
+        alert("Got to the end of the found search results.\nTry a more descriptive search, specify the name of the artist.");
+        return;
+      }
+
+      if(insideYT_Playlist) {
+        try {
+          cur_player.nextVideo();
+          return;
+        } catch(error) {
+          console.log(`Cannot load next video from YT Playlist, error: ${error}`);
+          M.toast({html: "Cannot go to next song, skipping it.."});
+        }
+        try {
+          cur_player.playVideoAt(cur_player.getPlaylistIndex() + 2);
+        } catch(error) {
+          insideYT_Playlist = false;
+          console.log(`Failed to load next video from YT Playlist for second time, error: ${error}`);
+          alert("Reached the end of playlist.");
+        }
+        return;
+      }
+
+      if(inPlaylist) {
+        if(shuffleBtn.children[0].innerHTML !== 'shuffle') {  // when shuffled end does not matter
+          if(songInPlaylistIdx === playlist.length - 1) {
+            alert("You are at the end of the playlist");
+            return;
+          }
+          songInPlaylistIdx++;
+        } else {  // when shuffle is on
+          // make sure not to repeat the songs played recently
+          let recentSongNodes = [];
+          let historyCurIter = historyLL._currentlyUsed;
+          // make sure historyCurIter is the last element in history
+          while(historyCurIter._next) {
+            historyCurIter = historyCurIter._next;
+          }
+          // set recent songs - recency of min(45 songs, 45% of playlist's size)
+          for(let i = 0; historyCurIter && i < maxHistorySize; i++) {
+            recentSongNodes.push(historyCurIter._data);
+            historyCurIter = historyCurIter._previous;
+          }
+          // choose random song from playlist which was not played recently
+          let rndIdx = 0;
+          do {
+            //rndIdx = Math.floor(Math.random() * playlist.length);
+            let nSeed = new Date().getTime();
+            rndIdx = (8253729 * nSeed + 2396403) % 32767;
+            rndIdx = rndIdx % playlist.length;
+          } while(recentSongNodes.includes(playlist[rndIdx]));
+          songInPlaylistIdx = rndIdx;
+        }
+        activeSongNode = playlist[songInPlaylistIdx];
+        loadSongNode();
+      } else {
+        if(songInSearchIdx === searchSongNodesArr.length - 1) {
+          console.log(`At the end of search results.`);
+          alert("No more previous songs, you can try a different search.");
+          return;
+        }
+        songInSearchIdx++;
+        activeSongNode = searchSongNodesArr[songInSearchIdx];
+        carouselObj.set(songInSearchIdx);  // onCycleTo will call loadSongNode
+        return;
+      }
+    }
+
+    function previousSong() {
+
+      if(insideYT_Playlist) {
+        if(cur_player.getPlaylistIndex() === 0) {
+          M.toast({html: "You are at the beginning of the playlist", classes: 'rounded'});
+        } else {
+          try {
+            cur_player.previousVideo();
+            return;
+          } catch(error) {
+            console.log(`Cannot load previous video from YT Playlist, error: ${error}`);
+            M.toast({html: "Cannot go to previous song, skipping it.."});
+            previousSong();
+          }
+        }
+        return;
+      }
+
+      if(!inPlaylist && songInSearchIdx === 0) {
+        alert('There are no more previous songs.\nTry a more specific search, specify the name of the artist.');
+        return;
+      }
+
+      if(inPlaylist) {
+        if(songInPlaylistIdx === 0) {
+          M.toast({html: "You are at the beginning of the playlist", classes: 'rounded'});
+          return;
+        }
+        songInPlaylistIdx--;
+        activeSongNode = playlist[songInPlaylistIdx];
+        loadSongNode();
+      } else {
+        if(songInSearchIdx === 0) {
+          console.log(`At beginning of search results.`);
+          alert("No more previous songs, you can try a different search.");
+          return;
+        }
+        songInSearchIdx--;
+        activeSongNode = searchSongNodesArr[songInSearchIdx];
+        carouselObj.set(songInSearchIdx);  // onCycleTo will call loadSongNode
+      }
+    }
+
+
+    // ============================================
+    // Other event listener functions
+
+    function openWikiLink() {  // opens in new tab
+       if(typeof activeSongNode !== 'undefined' && activeSongNode._wikiAboutArtistURL !== '') {
+        console.log(`Openining wiki page about artist: ${activeSongNode._wikiAboutArtistURL}`);
+        window.open(activeSongNode._wikiAboutArtistURL, '_blank');
+       }
+    }
+
+    // simple value based check - don't have time to implement every one of these
+    function existsSimiliarArtists(curSongNode) {
+      return !(typeof curSongNode === 'undefined' || typeof curSongNode._similiarArtists === 'undefined' || curSongNode._similiarArtists === []);
+    }
+
+
+    function recommendSong() {
+      let artistToSearch = '';
+      isRecommending = true;
+      inPlaylist = false;  // cause this is technically a new search
+      playPlaylistIcon.className = "material-icons center white-text";
+
+      if(typeof playlist !== 'undefined' && playlist.length !== 0) {  // find the most commmon artist in similiarArtists of objects in playlist
+        let allArtistsArr = [];
+        for(let i = 0; i < playlist.length; i++) {
+          //check for property similiarArtists in cur SongNode
+          if(existsSimiliarArtists(playlist[i])) {
+            allArtistsArr = allArtistsArr.concat(playlist[i]._similiarArtists);
+          }
+        }
+        // search for the most occured artist:
+        if(allArtistsArr.length === 0) {  // check if empty, just in case
+          console.log("No similiar artists found in the whole playlist!");
+          alert("There was an error trying to recommend a song.n\Please try some other time with different songs in the playlist.");
+          isRecommending = false;
+          return;
+        }
+        let counterMap = {};
+        let maxOccurrences = 1;
+        for(let i = 0; i < allArtistsArr.length; i++) {
+          let cur_el = allArtistsArr[i];
+          if(counterMap[cur_el] == null) {
+            counterMap[cur_el] = 1;
+          } else {
+            counterMap[cur_el]++;
+          }
+          if(counterMap[cur_el] > maxOccurrences) {
+            maxOccurrences = counterMap[cur_el];
+          }
+        }
+        let artistsOccurrences = Object.entries(counterMap);  // returns a matrix
+        artistsOccurrences.sort(function(a, b) {  // sort matrix by artist's # of occurrences
+          if(a[1] === b[1]) {
+            return 0;
+          }
+          return (a[1] < b[1]) ? -1 : 1;
+        });
+        let maxIdx = 4;
+        if(maxIdx >= artistsOccurrences.length) {  // make sure not to exceed arr's size
+          maxIdx = artistsOccurrences.length;
+        }
+        let randomIdx = Math.floor(Math.random() * maxIdx);
+        artistToSearch = artistsOccurrences[randomIdx];
+      } else {  // search based on currently specified artist
+        // check if it could not get similiarArtists list
+        if(!existsSimiliarArtists(activeSongNode)) {
+          console.log("There were no similiar artists found. Trying a search on current artist");
+          if(typeof activeSongNode === 'undefined' || activeSongNode._artistName === 'undefined' || activeSongNode._artistName === '') {
+            alert("Could not recommend a song.\nTry searching some other song you like on which the next recommendation will be based.");
+            console.log("Artist's name was not specified => Could not do a search.");
+            isRecommending = false;
+            return;
+          }
+          // make search based on currently specified artist
+          artistToSearch = activeSongNode._artistName;
+        } else {  // similiarArtists array is not empty, search artist from there
+          // do a basic search of random similiarArtist among first 12 in similiarArtists
+          let similiarArtistIdx = Math.floor(Math.random() * 12);
+          // make sure not to exceed the size of the array
+          if(similiarArtistIdx >= activeSongNode._similiarArtists.length) {
+            similiarArtistIdx = Math.floor(Math.random() * activeSongNode.similiarArtists.length);
+          }
+          // so not show alternative first if there are other search results
+          if(similiarArtistIdx === activeSongNode.similiarArtists.length - 1 && similiarArtistIdx > 0) {
+            similiarArtistIdx--;
+          }
+          artistToSearch = activeSongNode._similiarArtists[similiarArtistIdx].toString();
+        }
+      }
+      // do the actual search
+      if(typeof artistToSearch !== 'undefined' && artistToSearch !== '') {
+        try {
+          let finalSearch = '';
+          // remove indices added to names by scraped website - if any:
+          let ending = artistToSearch.length;
+          if(!isNaN(parseInt(artistToSearch[ending - 1])) && isNaN(parseInt(artistToSearch[ending - 2]))) {  // sometimes there is an extra character on scraped data's website
+            ending--;
+            console.log(`Removed 1 from the end of search. String was: ${artistToSearch}`);
+          }
+          for(let i = 0; i < ending; i++) {
+            if(artistToSearch[i] === '%' && i + 2 < artistToSearch.length && artistToSearch[i+1] === '2' && artistToSearch[i+2] === '0') {
+              finalSearch += ' ';
+              i += 3;
+            } else {
+              finalSearch += artistToSearch[i];
+            }            
+          }
+          //artistToSearch = artistToSearch.replace('%20', ' ');
+          //artistToSearch = artistToSearch.replace('+', ' ');
+          console.log(`Recommending a song by: ${finalSearch}`);
+          initialiseSearch('', finalSearch);
+        } catch(error) {          
+          isRecommending = false;
+          alert("There was a problem with recommending a song.\nTry again, or with a different song or artist.");
+        }
+      } else {
+        console.log("There was no artist specified for the song recommendation search to be based upon.");
+        alert("Please try a search with a known artist.");
+        isRecommending = false;
+      }
+
+      return;
+    }
+
+    function getJSON_Data(songSearch, artistSearch, curVideoURL) {
+      $.getJSON('/send_user_search', {
+          songSearched: songSearch,
+          artistSearched: artistSearch
+        }, function(data) {  // returned data from python
+            console.log("Processing the search data..");
+            if(!data || typeof data === 'undefined' || typeof data.song_nodes === 'undefined') {
+              alert("Failed to get song data.\nTry different search");
+              console.log("Failed to get song data.\nTry different search and refresh the page.");
+              return;
+            }
+            let searchSongNodesArr_JSON = data.song_nodes;
+            for(let i = 0; i < searchSongNodesArr_JSON.length; i++) {
+              let cur = searchSongNodesArr_JSON[i];
+
+              let cur_SongNode = new SongNode(cur.songName, cur.artistName, cur.wikiAboutArtistURL, cur.similiarArtists, cur.songMeaningsVotes, cur.songMeanings, cur.songLyrics, cur.yt_VideoID, cur.albumCoverLink);
+
+              searchSongNodesArr.push(cur_SongNode);
+            }
+
+            if(insideYT_Playlist) {  // add found results to playlist
+              const curVideoID = curVideoURL;
+              let nodeToAdd = searchSongNodesArr[0];
+              for(let i = 0; i < searchSongNodesArr.length; i++) {
+                if(searchSongNodesArr[i]._yt_VideoID === curVideoID) {
+                  nodeToAdd = searchSongNodesArr[i];
+                  break;
+                }
+              }
+              nodeToAdd._yt_VideoID = curVideoID;  // in case no search results match
+              addToPlaylist(nodeToAdd);
+              preloaderObj.className = "preloader-wrapper";  // turn off the preloader
+              searchSongNodesArr = [];  // clear it
+               console.log("Done processing the search data..");
+              return;
+            }
+            
+            // following check should never evaluate to true
+            // because there is always an alternative search created
+            if(typeof searchSongNodesArr === 'undefined' || searchSongNodesArr.length === 0) {
+              alert("There was a problem\nTry searching a different song.");
+              console.log("searchSongNodesArr is empty.");
+              return;
+            }
+
+            songInSearchIdx = 0;
+            if(isRecommending) {
+              console.log("Choosing random song from search results.");
+              if(searchSongNodesArr.length > 1) {
+                M.toast({html: "You can switch between these couple recommended songs with next/previous song buttons", classes: 'rounded'});
+              }
+              songInSearchIdx = Math.floor(Math.random() * searchSongNodesArr.length);
+              isRecommending = false;
+            }
+
+            // set carousel with found images:
+            carouselTag.style.display = "block";  // add visibility
+            carouselTag.innerHTML = "";  // clear the old images
+
+            // set new images
+            for(let i = 0; i < searchSongNodesArr.length; i++) {
+              let aTag = document.createElement('a');
+              aTag.className = "carousel-item";
+              let imgTag = document.createElement('img');
+              img_width = "220";
+              if(searchSongNodesArr[i]._albumCoverLink !== '') {  // image was found
+                imgTag.src = searchSongNodesArr[i]._albumCoverLink;
+              } else if(searchSongNodesArr.length > 1) {  // no image for cur song
+                // display .svg which says: No image available
+                imgTag.src = "https://upload.wikimedia.org/wikipedia/commons/1/15/No_image_available_600_x_450.svg";
+                img_width = "200";  // make it slightly smaller
+              } else {  // if it was just one song found without the image don't sidplay the no image text
+                carouselTag.style.display = "none";  // remove visibility since there are no images in carousel
+              }
+              const img_style = "max-width: " + img_width + "px;max-height: " + img_width + "px;";
+              imgTag.setAttribute("style", img_style);
+              aTag.appendChild(imgTag);
+              carouselTag.appendChild(aTag);
+            }
+            // reload carousel
+            carouselObj.destroy();
+            var carousel = document.querySelectorAll('.carousel');
+            var instances_carousel = M.Carousel.init(carousel, {
+              noWrap: true,
+              onCycleTo: function(slide) {
+                  for(let i = 0; i < carouselTag.children.length; i++) {
+                    if(slide === carouselTag.children[i]) {
+                      songInSearchIdx = i;
+                      activeSongNode = searchSongNodesArr[i];
+                      break;
+                    }
+                  }
+                  loadSongNode();
+                }
+            });
+            carouselObj = M.Carousel.getInstance(carouselTag);
+            carouselObj.set(songInSearchIdx);
+
+            // load the song
+            activeSongNode = searchSongNodesArr[songInSearchIdx];
+            console.log("Done processing the search data.");
+            preloaderObj.className = "preloader-wrapper";  // turn off the preloader
+            loadSongNode();
+        }
+      );
+    }
+
+    function getYT_Video_ID(link) {
+      newID = '';
+
+      
+      let links_id_attribute = '';
+
+      // if it is video dhared from mobile app
+      if (link.indexOf('youtu.be/') >= 0) {
+        links_id_attribute = 'youtu.be/';
+      } else if (link.indexOf('list=') >= 0) {
+        links_id_attribute = "list=";
+      } else if (link.indexOf('v=') >= 0) {
+        links_id_attribute = 'v=';
+      } else {
+        M.toast({html: "There is something wrong with the link?<br>Treating as search statement instead"});
+        return 'error';
+      }
+
+      // construct new ID:
+      for (let i = link.indexOf(links_id_attribute) + links_id_attribute.length; i < link.length; ++i) {
+        if (link[i] == '&') {
+          break;
+        }
+        newID += link[i];
+      }
+
+      /*
+      // If it is a list:
+      let new_id_start = link.indexOf('list=');
+      if (new_id_start < 0) {  // it is not a list
+        // if mobile link it will be of form:
+        // youtu.be/HRC...
+        // .indexOf('youtu.be/') !== -1
+        new_id_start = link.indexOf('v=');
+      }
+
+      let start_of_url = 'www.youtube.com/watch?v=';
+      if (link.indexOf('www.youtube.com') < 0) {  // new form of link without www. in it
+        start_of_url = link
+      }
+      let end_of_ID_idx = link.indexOf("list=");
+
+      if (end_of_ID_idx > 0) {  // get ID from playlist URL
+        newID = link.substring(start_of_url.length, end_of_ID_idx);
+      } else {
+        newID = link.substring(start_of_url.length, link.length);
+      }
+      */
+
+      return newID;
+    }
+
+    function initialiseSearch(songSearch, artistSearch) {
+      if(songSearch === '' && artistSearch === '') {
+        alert("Please specify the search");
+        return;
+      // Play a YouTube playlist in case it is specified or change current video ID:
+      }
+      if (artistSearch.indexOf('http') !== -1
+        && (artistSearch.indexOf('youtube.com/') !== -1
+            || artistSearch.indexOf('youtu.be/') !== -1
+            )
+          ) {
+        if (songSearch.toLowerCase() === 'pass') {
+          newYT_Video_ID = getYT_Video_ID(artistSearch);
+          if (newYT_Video_ID != "error") {
+            // change the id of the currently played song
+            if (activeSongNode === playlist[songInPlaylistIdx]) {
+              playlist[songInPlaylistIdx]._yt_VideoID = newYT_Video_ID;
+            } else {
+              activeSongNode._yt_VideoID = newYT_Video_ID;
+            }
+            // restart the song
+            loadSongNode();
+            
+            return;
+          }
+        } else if (songSearch.toLowerCase() === 'all') {
+          convertYT_Playlist_to_Playlist(0, 50);
+          return;
+        } else {
+          loadYTPlaylist(artistSearch);
+          insideYT_Playlist = true;
+          return;
+        }
+        // else if there was error with nreYT_VideoID it will just do normal search
+      }
+      console.log("Search initialised.");
+      inPlaylist = false;
+      playPlaylistIcon.className = "material-icons center white-text";
+      insideYT_Playlist = false;
+      playPlaylistIcon.className = "material-icons center white-text";
+
+      preloaderObj.className = "preloader-wrapper active";  // turn on the preloader
+      searchSongNodesArr = [];
+      songInSearchIdx = 0;
+      getJSON_Data(songSearch, artistSearch);
+    }
+
+    function getPlaylistID(url) {
+      let id = '';
+      let idx = 5 + url.indexOf('list=');
+      for(let i = idx; i < url.length; i++) {
+        if(url[i] === '&') {
+          break;
+        }
+        id += url[i];
+      }
+      console.log(`Found YT playlist ID: ${id}`);
+      return id;
+    }
+
+    function loadYTPlaylist(playlistURL) {
+      console.log('Loading in a YouTube playlist');
+      try{
+        // if(typeof cur_player === 'undefined' || cur_player === null) {
+        //   cur_player = createPlayer("dQw4w9WgXcQ", cur_player);
+        // }
+        cur_player = createPlayer("dQw4w9WgXcQ", cur_player);
+        setTimeout(function() {
+          cur_player.loadPlaylist({list: getPlaylistID(playlistURL),
+                                   index: 0,
+                                   listType: "playlist",
+                                   suggestedQuality: "small"});
+          setTimeout(function() {
+            nextSong();
+          }, 500);
+        }, 1000);
+        inPlaylist = false;
+        playPlaylistIcon.className = "material-icons center white-text";
+        insideYT_Playlist = true;
+        mainContainer.style.background = "#0e1111";
+      } catch(error) {
+        insideYT_Playlist = false;
+        console.log(`There was an error trying to load a YouTube playlist, error: ${error}`);
+        alert("Failed to load the playlist, please try a different one.");
+      }
+    }
+
+    function secondsToString(secs) {  // secs is always greater than 0
+      let final_string = '';
+
+      let hours = Math.floor(secs / 3600);
+      let minutes = Math.floor((secs / 60) % 60);
+      let seconds = Math.floor(secs % 60);
+
+      times_arr = [hours, minutes, seconds]  // holds timer values
+      // make every value representation 2 digit one
+      for(let i = 0; i < times_arr.length; i++) {
+        if(times_arr[i] < 10) {  // does not have 2 digits
+          final_string += '0';
+        }
+        final_string += times_arr[i].toString() + ':';
+      }
+      final_string = final_string.substring(0, final_string.length - 1);  // get rif of last ':'
+
+      return final_string;
+    }
+
+    function alreadyInPlaylist(addSongNode) {
+      let newName = addSongNode._songName;
+      let newArtist = addSongNode._artistName;
+      let newID = addSongNode._yt_VideoID;
+
+      for(let i = 0; i < playlist.length; i++) {
+        let curName = playlist[i]._songName;
+        let curArtist = playlist[i]._artistName;
+        let curID = playlist[i]._yt_VideoID;
+        if(curName === newName && curArtist === newArtist && curID === newID) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+
+    function presetVolumeDown(idx) {
+      if(playlist[idx]._specifiedVolume - volumeChangeStep <= 0) {
+        playlist[idx]._specifiedVolume = 0;
+      } else {
+        playlist[idx]._specifiedVolume -= volumeChangeStep;
+      }
+      console.log(`Presetting the volume of the ${idx}th song in playlist to ${playlist[idx]._specifiedVolume - volumeChangeStep}%`);
+      let msg = "Volume pre-set to: " + playlist[idx]._specifiedVolume.toString() + "%";
+      M.toast({html: msg});
+    }
+
+    function presetVolumeUp(idx) {
+      if(playlist[idx]._specifiedVolume + volumeChangeStep >= 100) {
+        playlist[idx]._specifiedVolume = 100;
+      } else {
+        playlist[idx]._specifiedVolume += volumeChangeStep;
+      }
+      console.log(`Presetting the volume of the ${idx}th song in playlist to ${playlist[idx]._specifiedVolume + volumeChangeStep}%`);
+      let msg = "Volume pre-set to: " + playlist[idx]._specifiedVolume.toString() + "%";
+      M.toast({html: msg});
+  }
+
+
+    function addToPlaylist(addSongNode) {
+      if(typeof addSongNode === 'undefined') {
+        console.log('SongNode to add is undefined, cannot add to playlist');
+        return;
+      }
+      if(alreadyInPlaylist(addSongNode)) {
+        console.log(`Did not add the song: ${addSongNode._songName} to the playlist because it is already there.`);
+        M.toast({html: "This song is already in the playlist", classes: 'rounded'});
+        return;
+      }
+      // create new li tag in the ul
+      let new_li = document.createElement('li');
+      new_li.className = "collection-item avatar transparent";
+      let icon = document.createElement('img');
+      // set album cover image
+      if(typeof addSongNode._albumCoverLink !== 'undefined' && addSongNode._albumCoverLink !== '') {
+        icon.src = addSongNode._albumCoverLink;
+      }
+      icon.className = 'circle';
+      // set name of the song as title
+      let title = document.createElement('span');
+      let songsName = addSongNode._songName;
+      if(songsName.length >= 24) {  // Insert break line after space in the string before 24th char
+        let lastSpaceIdx = 0;  // <br/> at beginning if it does not find spaces
+        for(let i = 23; i >= 0; i--) {
+          if(songsName[i] === " ") {
+            lastSpaceIdx = i;
+            break;
+          }
+        }
+        songsName = songsName.substring(0, lastSpaceIdx) + ' <br/> ' + songsName.substring(lastSpaceIdx + 1, songsName.length);
+      }
+      title.innerHTML = songsName;
+
+      // set artists name
+      let artist = document.createElement('p');
+      let artistNameLength = addSongNode._artistName.length;
+      if(artistNameLength > 0) {  // make sure text fits accordingly
+        let artistsName = '';
+        if(artistNameLength < 18) {
+          artistsName = addSongNode._artistName;
+        } else {
+          let lastSpaceIdx = 0;
+          for(let i = 17; i >= 0; i--) {
+            if(addSongNode._artistName[i] === " ") {
+              lastSpaceIdx = i;
+              break;
+            }
+          }
+          artistsName = addSongNode._artistName.substring(0, lastSpaceIdx) + ' <br/> ' + addSongNode._artistName.substring(lastSpaceIdx + 1, artistNameLength);
+        }
+        artist.innerHTML = 'by ' + artistsName;
+      } else {
+        artist.textContent = '';
+      }
+      artist.style.fontSize = "13px";
+
+      icon.addEventListener("click", function(e) {
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          if(ul_items[idx].children[0] === e.target) {
+            break;
+          }
+        }
+        //inPlaylist = true;  user can open a song but not start a playlist that way
+        //playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+        
+        songInPlaylistIdx = idx;
+        activeSongNode = playlist[idx];
+        loadSongNode();
+      });
+      title.addEventListener("click", function(e) {
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          if(ul_items[idx].children[1] === e.target) {
+            break;
+          }
+        }
+        songInPlaylistIdx = idx;
+        activeSongNode = playlist[idx];
+        loadSongNode();
+      });
+
+      // Buttons on side of each list item
+      let putOnRepeat = document.createElement('a');
+      let putOnRepeatIcon = document.createElement('i');
+
+      putOnRepeat.className = "btn-flat";
+
+      putOnRepeatIcon.className = "material-icons";
+      putOnRepeatIcon.setAttribute("style", "position: absolute; color: #ffffff; right: calc(2% + 60px);");
+      putOnRepeatIcon.innerHTML = "repeat";
+
+      putOnRepeat.appendChild(putOnRepeatIcon);
+
+      putOnRepeatIcon.addEventListener('click', function(e) {
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          if(ul_items[idx].children[2].children[0].children[0] == e.target) {
+            break;
+          }
+        }
+        if(e.target.innerHTML === "repeat") {
+          e.target.innerHTML = "repeat_one";
+          toRepeatOnceInPlaylist.set(idx, e.target);
+        } else {
+          e.target.innerHTML = "repeat";
+          toRepeatOnceInPlaylist.delete(idx);
+        }
+      });
+
+      let presetVolumeDownBtn = document.createElement('a');
+      let presetVolumeDownBtnIcon = document.createElement('i');
+
+      presetVolumeDownBtn.className = "btn-flat";
+
+      presetVolumeDownBtnIcon.className = "material-icons";
+      presetVolumeDownBtnIcon.setAttribute("style", "position: absolute; color: #ffffff; right: calc(2% + 30px);");
+      presetVolumeDownBtnIcon.innerHTML = "volume_down";
+
+      presetVolumeDownBtn.appendChild(presetVolumeDownBtnIcon);
+
+      presetVolumeDownBtn.addEventListener('click', function(e) {
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          let cur_tag = ul_items[idx].children[2].children[1].children[0];
+          // check if break line is ahead of all other tags, if so skip it
+          if(ul_items[idx].children[2].children[0].nodeName === "BR") {
+            cur_tag = ul_items[idx].children[2].children[2].children[0];
+          }
+          if(cur_tag == e.target) {  // found it
+            break;
+          }
+        }
+        presetVolumeDown(idx);
+      });
+
+      let presetVolumeUpBtn = document.createElement('a');
+      let presetVolumeUpBtnIcon = document.createElement('i');
+
+      presetVolumeUpBtn.className = "btn-flat";
+
+      presetVolumeUpBtnIcon.className = "material-icons";
+      presetVolumeUpBtnIcon.setAttribute("style", "position: absolute; color: #ffffff; right: 2%;");
+      presetVolumeUpBtnIcon.innerHTML = "volume_up";
+
+      presetVolumeUpBtn.appendChild(presetVolumeUpBtnIcon);
+
+      presetVolumeUpBtn.addEventListener('click', function(e) {
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          let cur_tag = ul_items[idx].children[2].children[2].children[0];
+          // check if break line is ahead of all other tags, if so skip it
+          if(ul_items[idx].children[2].children[0].nodeName === "BR") {
+            cur_tag = ul_items[idx].children[2].children[3].children[0];
+          }
+          if(cur_tag == e.target) {  // found it
+            break;
+          }
+        }
+        presetVolumeUp(idx);
+      });
+
+      artist.appendChild(putOnRepeat);
+      artist.appendChild(presetVolumeDownBtn);
+      artist.appendChild(presetVolumeUpBtn);
+
+
+      // Add the 'start at specified time' input field:
+      let time_input_field = document.createElement('input');
+      time_input_field.className = "validate";
+      time_input_field.type = "text";
+      time_input_field.setAttribute("style", "position: absolute;display: inline-block;max-width: 50px;height: 20px;font-size: 12px;right: 3%;top: 8px;color: #ffffff;");
+
+      // set placeholder if start value was already specified:
+      if(addSongNode._specifiedStartAtTime !== 0) {
+        time_input_field.placeholder = secondsToString(addSongNode._specifiedStartAtTime);
+      }
+
+      // set event listener for the input field
+      time_input_field.addEventListener('keyup', function(e) {
+        if(e.key !== 'Enter') {  // skip inappropriate characters (letters, etc)
+          let reg = /[^0-9:now\s]/gi;
+          e.target.value = e.target.value.replace(reg, "");
+          return;
+        }
+        time_input_field.blur();
+        // find the index of cur li obj in ul
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          if(ul_items[idx].children[3] == e.target) {
+            break;
+          }
+        }
+        // translate user's input appropriately
+        let input_value = e.target.value;
+        input_value = input_value.trim();  // remove spaces from the beginning and end of string
+
+        let letters_regex = /n+|o+|w+/;
+
+        if(letters_regex.test(input_value)) {  // check if letters: n,o,w were used
+          if(input_value.toLowerCase() === 'now') {
+            if(typeof cur_player !== 'undefined' && cur_player !== null) {  // check if it is ready
+              let cur_time = cur_player.getCurrentTime();
+              playlist[idx].specifyStartAtTime(cur_time);  // update the node in playlist
+              e.target.placeholder = secondsToString(cur_time);
+              e.target.value = '';  // reset the field so placeholder could be seen
+            }
+            // do not erase user's input since player has not loaded yet
+            // and they could conviniently press enter when it loads
+            return;
+          }
+          // otherwise it is incorrect input
+          alert("Did you mean to specify time to: 'now' ?");
+          e.target.value = '';
+          return;
+        }
+        // when user is done typing remove whitespaces
+        input_value = input_value.replace(/\s+/g, ':');  // from middle of string
+        input_value = input_value.replace(/::+/g, ':');  // in case both space and ':' were mixed exclude repetition of ':'
+        // convert the input value into seconds:
+        input_time_arr = [];  // holds integer values of ...hours/minutes/seconds
+        input_time_arr = input_value.split(':');
+        let time_seconds = 0;
+        let seconds_multiplier = 1;  // indicator of minute/hour...
+        for(let i = input_time_arr.length - 1; i >= 0; i--) {
+          time_seconds += Number(input_time_arr[i]) * seconds_multiplier;
+          seconds_multiplier *= 60;
+        }
+        // set value for this SongNode:
+        playlist[idx].specifyStartAtTime(time_seconds);
+
+        if(time_seconds !== 0) {  // update the placeholder
+          e.target.placeholder = secondsToString(time_seconds);
+        } else {
+          e.target.placeholder = '';  // clear it
+        }
+        e.target.value = '';  // so a user could see the placeholder
+      });
+
+
+      new_li.appendChild(icon);
+      new_li.appendChild(title);
+      new_li.appendChild(artist);
+      new_li.appendChild(time_input_field);
+      if(addSongNode !== activeSongNode) {
+        new_li.style.opacity = 0.7;  // opacity is 1 only for currently played node (updated in loadSongNode)
+      }
+      playlistObj.appendChild(new_li);
+      // scroll to last element:
+      playlistObj.scrollTop = new_li.offsetTop - 5;
+      // Store current SongNode in the playlist array
+      if(typeof cur_player !== 'undefined' && cur_player !== null && !isUploading) {
+        addSongNode.specifyVolume(cur_player.getVolume());  // set the volume to current one
+      }
+      playlist.push(addSongNode);
+
+      if(!isUploading) {  // when uploading bunch of songs do not show notification
+        // update the index
+        songInPlaylistIdx = playlist.length - 1;  // since it was appended to the end
+        M.toast({html: "Added to playlist", classes: "rounded"});
+      }
+      
+    }
+
+    function removeSongFromPlaylist() {
+      if(playlist.length === 0) {
+        console.log("Playlist is empty so nothing was removed.");
+        return;
+      }
+      playlist.splice(songInPlaylistIdx, 1);
+      let toRemove = playlistObj.children[songInPlaylistIdx];
+      playlistObj.removeChild(toRemove);
+      // update those to be repeated once
+      if(toRepeatOnceInPlaylist.has(songInPlaylistIdx)) {
+        toRepeatOnceInPlaylist.delete(songInPlaylistIdx);
+      }
+
+      if(playlistObj.children.length === 0) {
+        console.log("Emptied the playlist.");
+        M.toast({html: "Your playlist is now empty.", classes: "rounded"});        
+        return;
+      }
+      // go to next song if any, otherwise go one song back if any
+      if(songInPlaylistIdx >= playlist.length) {
+        songInPlaylistIdx--;
+      }  // otherwise it simply loads next child node as cur
+      console.log("Removed the song from playlist.");
+      if(!inPlaylist) {
+        return;
+      }
+      activeSongNode = playlist[songInPlaylistIdx];
+      loadSongNode();
+    }
+
+    function playPlaylist() {
+      if(playlist.length === 0) {
+        console.log("Did not start playlist since playlist is empty.");
+        return;
+      }
+      if(inPlaylist) {  // turn off the inPlaylist option
+        inPlaylist = false;
+        playPlaylistIcon.className = "material-icons center white-text";
+        return;
+      }
+      inPlaylist = true;
+      playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+      // by having a song selected in playlist, user has chosen that the
+      // playlist should start playing from that specific song, if that song reached the end
+      // then play next song in playlist if the previously played song was not in the playlist
+      // then begin the playlist from the top
+      if(insideYT_Playlist) {
+        nextSong();  // insideYT_Playlist = false in loadSongNode
+      } else if(playlist[songInPlaylistIdx] !== activeSongNode || cur_player.getPlayerState() === 0) {
+        if(!playlist.includes(activeSongNode)) {
+          songInPlaylistIdx = 0;
+          activeSongNode = playlist[songInPlaylistIdx];
+          loadSongNode();
+        } else {
+          nextSong();
+        }
+      }
+      M.toast({html: "Playlist started. Next/previous song buttons can now be used to go through playlist.", classes: "rounded"});
+    }
+
+    function downloadPlaylist() {
+      console.log('Downloading a playlist..');
+      let aTag = document.createElement('a');
+      aTag.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify({"playlist": playlist})));
+      const playlistFileName = playlistNameText.textContent + '.json';
+      aTag.setAttribute('download', playlistFileName);
+
+      aTag.style.display = "none";
+      document.body.appendChild(aTag);
+
+      aTag.click();
+
+      document.body.removeChild(aTag);
+      console.log('Done downloading a playlist..');
+    }
+
+    function uploadPlaylist() {
+      console.log("Uploading a playlist..");
+      if(uploadPlaylistInput.files.length < 1) {
+        console.log("No files were uploaded.");
+        return;
+      }
+      // change the title of the playlist accordingly
+      if(uploadPlaylistInput.files.length === 1) {  // set name of the file if it is just 1 playlist to load
+        let fileName = uploadPlaylistInput.files[0].name;
+        // get rid of .json in file name
+        playlistNameText.textContent = fileName.substring(0, fileName.length - 5);
+      } else {  // make the title of playlist: Sweet mix
+        playlistNameText.textContent = 'Sweet Mix';
+      }
+      isUploading = true;
+      for(let z = 0; z < uploadPlaylistInput.files.length; z++) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+          //console.log(`Found files: ${reader.result}`);
+          let playlistToLoad = [];
+          try{
+            playlistToLoad = JSON.parse(reader.result)["playlist"];
+            if(typeof playlistToLoad === 'undefined' || playlistToLoad === null || playlistToLoad.length === 0) {
+              console.log("playlistToLoad has no value after importing the file.\nFailed to process file input.");
+              alert("Failed to load playlist. Try again.");
+              return;
+            }
+          } catch (error) {
+            console.log(`Failed to parse JSON data. Error: ${error}`);
+            alert("Failed to load playlist. Check if playlist file is valid.");
+            return;
+          }
+          
+          // set the playlist to null in case user only wants to load a specific playlist
+          if(uploadPlaylistInput.files.length === 1) {
+            playlist = [];  // gets updated in addToPlaylist function
+            playlistObj.innerHTML = "";  // clear old playlist object
+          }  // in case of more playlists they all merge together with the current one in browser
+
+          // form new playlist object
+          cur_playlist = playlistToLoad;
+          let tmpSongNodesArr = [];  // necessary for keeping track of which node to load in async call
+          for(let i = 0; i < cur_playlist.length; i++) {
+            const cur = cur_playlist[i];
+            try{
+              let curSongNode = new SongNode(cur._songName, cur._artistName, cur._wikiAboutArtistURL, cur._similiarArtists, cur._songMeaningsVotes, cur._songMeanings, cur._songLyrics, cur._yt_VideoID, cur._albumCoverLink);
+              if (typeof cur._specifiedVolume === 'undefined' || cur._specifiedVolume === null || !cur._specifiedVolume) {
+                curSongNode.specifyVolume(30);
+              } else {
+                curSongNode.specifyVolume(cur._specifiedVolume);
+              }
+              curSongNode.specifyStartAtTime(cur._specifiedStartAtTime);
+
+              tmpSongNodesArr.push(curSongNode);
+            } catch(error) {
+              console.log(`Failed to create SongNode from JSON data. Error: ${error}`);
+              alert("There was something wrong with the JSON playlist");
+              return;
+            }
+          }
+
+          // add all songs to playlist - highly asynchronous
+          for(let i = 0; i < tmpSongNodesArr.length; i++) {
+            addToPlaylist(tmpSongNodesArr[i]);
+          }
+
+          playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+        };
+        reader.readAsText(uploadPlaylistInput.files[z]);
+      }
+      setTimeout(function() {  // make sure all songs are uploaded and then update
+        isUploading = false;
+        songInPlaylistIdx = 0;
+        // start a playlist only if there was no search song loaded, oterwise the playlist is just loaded in but not started
+        if(typeof activeSongNode === 'undefined' || activeSongNode === null || inPlaylist) {
+          inPlaylist = true;
+          activeSongNode = playlist[songInPlaylistIdx];
+          loadSongNode();
+          playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+        } else {
+          playPlaylistIcon.className = "material-icons center white-text";
+        }
+        
+        console.log("Done uploading a playlist..");
+      }, 400);
+    }
+
+    function convertYT_Playlist_to_Playlist(start, end) {
+      M.toast({html: "This may take a couple minutes", classes: "rounded"});
+      for (let i = start, timer = 0; i < end; ++i, ++timer) {
+        setTimeout(function() {addToPlaylistFromYT_Playlist();}, timer * 1000);
+        setTimeout(function() {nextSong();}, 500 + timer * 1000);
+      }
+      setTimeout(function() {alert("Done converting YT playlist to OMP playlist!")}, 500 + (end - 1) * 1000);
+    }
+
+    // ==========================================================================
+    // Setting up event listeners:
+
+    searchButton.addEventListener('click', function(e) {
+      initialiseSearch(searchBarSong.value, searchBarArtist.value);
+    });
+
+    searchBarSong.addEventListener('keydown', function(e) {
+      if(e.key === "Enter") {
+        initialiseSearch(searchBarSong.value, searchBarArtist.value);
+        searchBarSong.blur();
+        searchBarArtist.blur();
+      }
+    });
+
+    searchBarArtist.addEventListener('keydown', function(e) {
+      if(e.key === "Enter") {
+        initialiseSearch(searchBarSong.value, searchBarArtist.value);
+        searchBarSong.blur();
+        searchBarArtist.blur();
+      }
+    });
+
+    clearSearchIcon.addEventListener('click', function(e) {
+      searchBarArtist.value = '';
+      searchBarSong.value = '';
+      searchBarSong.focus();  // setting autofocus
+    });
+
+    reloadYT_Video.addEventListener('click', function(e) {
+      // do not change anything just try youtube video again
+      loadSongNode();
+    });
+
+    artistName.addEventListener('click', function(e) {
+      openWikiLink();
+    });
+
+    volumeUpBtn.addEventListener('click', function(e) {
+      volumeUp();
+    });
+
+    volumeDownBtn.addEventListener('click', function(e) {
+      volumeDown();
+    });
+
+    playPauseBtn.addEventListener('click', function(e) {
+      playPause();
+    });
+
+    // create shortcuts for play/pause, volume up/down
+    let wasPreviousKeyShift = false;
+    document.addEventListener('keydown', function(e) {
+      const cur_active = document.activeElement;  // checks only for input type tags (searchbars in this case)
+      // check whether user is making an input, if so, do not consider it a shortcut key
+      if(typeof cur_active !== 'undefined' && cur_active !== null && cur_active !== document.getElementsByTagName('body')[0] && (cur_active.classList.contains('input-field') || cur_active.tagName === 'INPUT')) {
+        return;
+      }
+
+      if (e.key === 'Shift') {
+        wasPreviousKeyShift = true;
+        setTimeout(function() {
+          wasPreviousKeyShift = false;
+        }, 800);
+        return;
+      } else if(wasPreviousKeyShift) {
+        wasPreviousKeyShift = false;
+        if (e.key === 's') {
+          downloadPlaylist();
+          return;
+        }
+        if (e.key === 'ArrowRight') {
+          console.log("Loading next played song in history");
+          historyLL.moveToNextHistoryNode();
+          activeSongNode = historyLL._currentlyUsed._data;
+          loadSongNode();
+          return;
+        }
+        if (e.key === 'ArrowLeft') {
+          console.log("Loading previous played song in history");
+          historyLL.moveToPreviousHistoryNode();
+          activeSongNode = historyLL._currentlyUsed._data;
+          loadSongNode();
+          return;
+        }
+        if (e.key === '-' || e.key === '+') {
+          playlist[songInPlaylistIdx]._specifiedVolume = cur_player.getVolume();
+          console.log(`Presetting the volume of the ${songInPlaylistIdx}th song in playlist to ${playlist[songInPlaylistIdx]._specifiedVolume}%`);
+          const msg = "Volume pre-set to: " + playlist[songInPlaylistIdx]._specifiedVolume.toString() + "%";
+          M.toast({html: msg});
+          return;
+        }
+      }
+
+      switch (e.key) {
+        case ' ':
+          playPause();
+          break;
+        case '+':
+          volumeUp();
+          break;
+        case '-':
+          volumeDown();
+          break;
+        case "ArrowRight":
+          nextSong();
+          break;
+        case "ArrowLeft":
+          previousSong();
+          break;
+        default:
+          break;
+      }
+
+      wasPreviousKeyShift = false;  // it was not since we reached switch statement
+    });
+
+    nextLinkBtn.addEventListener('click', function(e) {
+      nextSong();
+    });
+
+    previousLinkBtn.addEventListener('click', function(e) {
+      previousSong();
+    });
+
+    shrinkLyricsBtn.addEventListener('click', function(e) {
+      lyricsContainer.close(0);
+    });
+  
+    recommendSongBtn.addEventListener('click', function(e) {
+      recommendSong();
+    });
+    
+    addToPlaylistBtn.addEventListener('click', function(e) {
+      addToPlaylistFromYT_Playlist();
+    });
+
+    removeFromPlaylistBtn.addEventListener('click', function(e) {
+      removeSongFromPlaylist();
+    });
+
+    playPlaylistBtn.addEventListener('click', function(e) {
+      playPlaylist();
+    });
+
+    downloadPlaylistBtn.addEventListener('click', function(e) {
+      downloadPlaylist();
+    });
+    
+    uploadPlaylistInput.addEventListener('change', function(e) {
+      uploadPlaylist();
+    }, false);
+
+
+    forward10SecBtn.addEventListener('click', function(e) {
+      if(typeof cur_player === 'undefined') {
+        console.log("Player is undefined.");
+        return;
+      }
+      cur_player.seekTo(cur_player.getCurrentTime() + 10, true);
+    });
+
+    rewind10SecBtn.addEventListener('click', function(e) {
+      if(typeof cur_player === 'undefined') {
+        console.log("Player is undefined.");
+        return;
+      }
+      if(cur_player.getCurrentTime() - 10 <= 0) {
+        cur_player.seekTo(0, true);
+      } else {
+        cur_player.seekTo(cur_player.getCurrentTime() - 10, true);
+      }
+    });
+
+    putCurSongOnRepeat.addEventListener('click', function(e) {
+      if(typeof cur_player === 'undefined') {
+        console.log("Player is undefined.");
+        return;
+      }
+      inPlaylist = false;
+      playPlaylistIcon.className = "material-icons center white-text";
+      // change the icon
+      if(putCurSongOnRepeat.children[0].innerHTML !== 'all_inclusive') {
+        putCurSongOnRepeat.children[0].innerHTML = 'all_inclusive';
+      } else {
+        putCurSongOnRepeat.children[0].innerHTML = 'repeat';
+      }
+    });
+
+    playlistObj.addEventListener('click', function(e) {
+      if(e.target && e.target.matches("li.item")) {        
+        let ul_items = playlistObj.children;
+        let idx = 0;
+        for(idx = 0; idx < ul_items.length; idx++) {
+          if(ul_items[idx] === e.target) {
+            break;
+          }
+        }
+        inPlaylist = true;
+        playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+        songInPlaylistIdx = idx;
+        activeSongNode = playlist[idx];
+        loadSongNode();
+      }
+    });
+
+    shuffleBtn.addEventListener('click', function(e) {
+      if(shuffleBtn.children[0].innerHTML === 'sort') {  // shuffle is currently off
+        shuffleBtn.children[0].innerHTML = 'shuffle';
+      } else {
+        shuffleBtn.children[0].innerHTML = 'sort';
+      }
+    });
+
+    nextHistoryBtn.addEventListener('click', function(e) {
+      console.log("Loading next played song in history");
+      historyLL.moveToNextHistoryNode();
+      activeSongNode = historyLL._currentlyUsed._data;
+      loadSongNode();
+    });
+
+    lastHistoryBtn.addEventListener('click', function(e) {
+      console.log("Loading previously played song in history");
+      historyLL.moveToPreviousHistoryNode();
+      activeSongNode = historyLL._currentlyUsed._data;
+      loadSongNode();
+    });
+
+    searchBarPlaylist.addEventListener('keyup', function(e) {
+      isSearchingInPlaylist = true;
+      if(searchBarPlaylist.value === '') {
+        return;
+      }
+      if(e.key === 'Enter') {
+        searchBarPlaylist.blur();
+        isSearchingInPlaylist = false;
+        return;
+      }
+      inPlaylist = true;
+      playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+      let search = searchBarPlaylist.value.trim().toLowerCase();
+      let searchWords = search.split(" ");
+
+      for(let i = 0; i < playlist.length; i++) {
+        let curNode = playlist[i];
+        let potentialSearch = curNode._songName + ' ' + curNode._artistName;  // what search might look like for the current node
+        potentialSearch = potentialSearch.toLowerCase();
+        let isMatching = true;
+        // if potentialSearch include all of the words, play the song
+        for(let j = 0; j < searchWords.length; j++) {
+          if(!potentialSearch.includes(searchWords[j])) {
+            isMatching = false;
+            break;
+          }
+        }
+        if(isMatching) {  // curNode fits the search
+          if ((e.key === "ArrowRight" || e.key === "ArrowDown") && i <= songInPlaylistIdx) {
+            continue;  // when user clicks down/right arrows find next song which fits the exact same search as the current one
+          }
+          // do not replay currently loaded song nor previous search results:
+          if(activeSongNode !== curNode) {
+            let liTag = playlistObj.children[i];
+            playlistObj.scrollTop = liTag.offsetTop - 5;
+            songInPlaylistIdx = i;
+            activeSongNode = curNode;
+            loadSongNode();
+          } else if (!isSearchingInPlaylist) {  // this is the one user looked for since Enter was clicked, therefore add it to history
+            addSongNodeToHistory(activeSongNode);
+          }
+          // stop searching since user might need to be more specific or will use the arrows
+          break;
+        }  // else keep searching for a match
+      }
+    });
+
+    searchBarPlaylist.onblur = function() {  // make sure that currently played is added to history
+      isSearchingInPlaylist = false;
+      addSongNodeToHistory(activeSongNode);
+    };
+
+
+
+    handburgerMenuBtn.addEventListener('click', function(e) {
+      if(handburgerMenuBtn.innerHTML === 'view_comfy') {  // open the playlist view on mobile
+        document.getElementById('playlistOptions').style.display = 'block';
+        playlistObj.style.display = 'block';
+        handburgerMenuBtn.innerHTML = 'view_list';
+        document.getElementById('footer').style.display = "none";  // make footer invisible when viewing in playlist
+      } else {  // close the playlist view
+        document.getElementById('playlistOptions').style.display = 'none';
+        playlistObj.style.display = 'none';
+        handburgerMenuBtn.innerHTML = 'view_comfy';
+        document.getElementById('footer').style.display = "block";  // enable footer
+      }
+    });
+
+
+    function addSongNodeToHistory(songNode) {
+      // check if it's being loaded by calling song from history
+      if(typeof historyLL._currentlyUsed !== 'undefined' && historyLL._currentlyUsed !== null) {
+        console.log("Adding song to history.");
+        let inHist = historyLL._currentlyUsed._data;
+        if(songNode !== inHist) {
+          historyLL.append(songNode);
+        }
+      }
+      // check if it is the very first one to add to the history
+      if(typeof historyLL._head === 'undefined' || historyLL._head === null) {
+        console.log("Adding song to history. (First el in history)");
+        historyLL.append(songNode);
+      }
+    }
+
+    function setCarouselActiveSongNodeImage(songNodeToDisplay) {
+      // add new image
+      carouselTag.style.display = "block";  // add visibility
+      carouselTag.innerHTML = "";  // clear the old images
+      // set new image
+      let aTag = document.createElement('a');
+      aTag.className = "carousel-item";
+      let imgTag = document.createElement('img');
+      imgTag.src = songNodeToDisplay._albumCoverLink;
+      imgTag.setAttribute("style", "max-width: 220px;max-height: 220px;");
+      aTag.appendChild(imgTag);
+      carouselTag.appendChild(aTag);
+
+      // reload carousel
+      carouselObj.destroy();
+      var carousel = document.querySelectorAll('.carousel');
+      var instances_carousel = M.Carousel.init(carousel, {
+        noWrap: true
+      });
+      carouselObj = M.Carousel.getInstance(carouselTag);
+      if(typeof activeSongNode._albumCoverLink === 'undefined' || activeSongNode._albumCoverLink === '') {  // make it invisible since there is no image
+        carouselTag.style.display = "none";
+      }
+    }
+
+    function addToPlaylistFromYT_Playlist() {
+      if(!insideYT_Playlist) {
+        addToPlaylist(activeSongNode);
+        return;
+      }
+      // Add the song currently played from YouTube playlist to
+      // an OMP Playlist, and also try to add it as a new song search
+      preloaderObj.className = "preloader-wrapper active";  // turn on the preloader
+      try{
+        let cur_video_title = cur_player.getVideoData().title;
+        console.log(`Title of this video: ${cur_video_title}`);
+        // clean it up a little bit to be easier to search for:
+        let clean_title = cur_video_title.trim();
+        clean_title = clean_title.replace(/\(.*\)/gi, '');
+        clean_title = clean_title.replace(/\[.*\]/gi, '');
+        clean_title = clean_title.replace(/lyrics video/gi, '');
+        clean_title = clean_title.replace(/lyrics/gi, '');
+        clean_title = clean_title.replace(/[?!,\.]/gi, '');
+        // divide into song and artist search parts
+        let song_search_text = '';
+        let artist_search_text = '';
+        let atSongSearch = false;
+        for(let i = 0; i < clean_title.length; i++) {
+          if(!atSongSearch) {
+            if(clean_title[i] === '-') {
+              atSongSearch = true;
+            } else {
+              artist_search_text += clean_title[i];
+            }
+          } else {
+            song_search_text += clean_title[i];
+          }
+        }
+        song_search_text = song_search_text.replace(/-/gi, '');
+        console.log(`Song Search text: ${song_search_text}\nartist_search_text: ${artist_search_text}`);
+        getJSON_Data(song_search_text, artist_search_text, cur_player.getPlaylist()[cur_player.getPlaylistIndex()]);
+      } catch(error) {
+        console.log(`Could not add to playlist from YT playlist while trying to make a search for it, error: ${error}`);
+        alert('Failed to add to playlist. Try with different song.');
+      }
+    }
+
+    // =====================================================================
+    // Load in a song
+    function loadSongNode() {
+      console.log("Loading the Song Node");
+      if(typeof activeSongNode === 'undefined') {
+        console.log("activeSongNode is of type undefined.");
+        alert("There was a problem\nTry searching a different song.");
+        return;
+      }
+
+      insideYT_Playlist = false;  // since loadSongNode is never run when inside YT Playlist
+
+      // creating the youtube player
+      if(typeof activeSongNode._yt_VideoID === 'undefined' || activeSongNode._yt_VideoID === '') {
+        console.log("Skipped the song, couldn't play it.");
+        M.toast({html: "Skipped the song, couldn't play it", classes: 'rounded'});
+        if(!inPlaylist) {
+          songInSearchIdx++;
+        } else {
+          songInPlaylistIdx++;
+        }
+        
+        if(songInSearchIdx === searchSongNodesArr.length) {
+          alert("No more songs were found.\nTry changing the search.");
+          console.log("Reached the end of array of search results.");
+          return;
+        }
+
+        if(!inPlaylist) {
+          activeSongNode = searchSongNodesArr[songInSearchIdx];
+        } else {
+          activeSongNode = playlist[songInPlaylistIdx];
+        }
+
+        loadSongNode();
+        return;
+      }
+
+      // set the yt player with the current song
+      console.log(`YT ID: ${activeSongNode._yt_VideoID}`);
+      if(typeof cur_player === 'undefined' || cur_player === null) {
+        cur_player = createPlayer(activeSongNode._yt_VideoID, cur_player);
+      } else {
+        cur_player.loadVideoById({'videoId': activeSongNode._yt_VideoID,
+                       'startSeconds': activeSongNode._specifiedStartAtTime});
+        cur_player.setVolume(activeSongNode._specifiedVolume);
+        setTimeout(function() {
+          cur_player.setVolume(activeSongNode._specifiedVolume);
+          console.log(`This song's pre-set volume is: ${activeSongNode._specifiedVolume}`);
+        }, 2500);
+      }
+
+      // Set the HTML objects:
+      changeBackgroundColour();
+      playPauseIcon.innerHTML = "pause";
+      let playPlaylistIcon = document.getElementById('playPlaylistIcon');
+      if(inPlaylist) {
+        playPlaylistIcon.className = "material-icons center blue-text text-lighten-1";
+      } else {
+        playPlaylistIcon.className = "material-icons center white-text";
+      }
+
+      // setting the name of the song and artists
+      let songsName = activeSongNode._songName.toString();
+      if(songsName.length > 18) {  // make sure it does not overlap with other elements
+        reloadYT_Video.textContent = songsName.substring(0, 16) + '...';
+        reloadYT_Video.setAttribute("data-tooltip", songsName);
+      } else {
+        reloadYT_Video.textContent = songsName;
+        reloadYT_Video.setAttribute("data-tooltip", "Reload song");
+      }
+      artistName.innerHTML = activeSongNode._artistName;
+
+
+      if(inPlaylist) {
+        // Setting the image when there is only one image to set,
+        // otherwise carousel will have already been set
+        if(typeof activeSongNode._albumCoverLink !== 'undefined' && activeSongNode._albumCoverLink !== '') {  // if the link was found set image
+          setCarouselActiveSongNodeImage(activeSongNode);
+        } else{  // make it invisible since there is no image
+          carouselTag.style.display = "none";
+        }
+      } else if(typeof carouselObj !== 'undefined') {  // update carousel
+        if(searchSongNodesArr[songInSearchIdx] === activeSongNode) {
+          carouselObj.set(songInSearchIdx);
+        } else {  // if the song in playlist was clicked, but the inPlaylist mode is off
+          setCarouselActiveSongNodeImage(activeSongNode);
+        }
+      } else {
+        console.log("Carousel object is of type undefined. Failed to update carousel.");
+        console.log("Creating a new carousel with the album cover of current song");
+        setCarouselActiveSongNodeImage(activeSongNode);
+      }
+
+      // setting lyrics
+      if(typeof activeSongNode._songLyrics !== 'undefined' && activeSongNode._songLyrics !== '') {
+        let lyrics = activeSongNode._songLyrics;
+        lyrics = lyrics.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+        lyricsText.innerHTML = lyrics;
+        //shrinkLyricsBtn.style.visibility = "visible";
+        shrinkLyricsBtn.style.display = "block";
+      } else {  // could not get the lyrics msg
+        lyricsText.innerHTML = "Could not find the lyrics.";
+        shrinkLyricsBtn.style.display = "none";
+      }
+
+      // setting song meanings/comments
+      if(typeof activeSongNode._songMeanings !== 'undefined' && activeSongNode._songMeanings.length !== 0) {
+        let meaningsArray = activeSongNode._songMeanings;
+        let meaningTypeTitles = [];
+        let meaningsContent = [];
+        let meaningVotes = activeSongNode._songMeaningsVotes;
+        // getting titles and comments
+        for(let i = 0; i < meaningsArray.length; i++) {  // max length is 2
+          for (let key in meaningsArray[i]) {
+            meaningTypeTitles.push(key.toString() + '');  // add type of comment
+            let content = meaningsArray[i][key];
+            content = content.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+            meaningsContent.push(content);  // add the comment itself
+          }
+        }
+        // setting values in the ul table:
+        let listItems = songMeaningsContainer.children;
+        for(let i = 0; i < meaningsContent.length; i++) {  // never exceeds size of ul
+          // set the type of comment and number of votes as span element of class badge
+          let curTitleEl = listItems[i].children[0];
+          curTitleEl.innerHTML = meaningTypeTitles[i];
+          let badgeTag = document.createElement('span');
+          badgeTag.className = "new badge transparent";
+          badgeTag.setAttribute("data-badge-caption", "votes");
+          badgeTag.textContent = meaningVotes[i];
+          //badgeTag.style.color = "#ffffff";
+          curTitleEl.appendChild(badgeTag);
+          
+          let curSongMeaning = listItems[i].children[1].children[0];
+          curSongMeaning.innerHTML = meaningsContent[i];
+        }
+      } else {  // could not get the comments msg
+        // removing badges by using innerHTML instead of textContent:
+        songMeaningsContainer.children[0].children[0].innerHTML = "Song Meaning";
+        songMeaningsContainer.children[1].children[0].innerHTML = "General Comment";
+
+        songMeaningsContainer.children[0].children[1].children[0].textContent = "There were no comments found that are related to the song's meaning.";
+        songMeaningsContainer.children[1].children[1].children[0].textContent = "Didn't find any more comments that are related to this song's meaning.";
+      }
+
+      // Clear the repeat of last song:
+      putCurSongOnRepeat.children[0].innerHTML = 'repeat';
+
+      
+      // set opacity of the node so it would stand out or lower it if not currently played
+      for(let i = 0; i < playlistObj.children.length; i++) {
+        if(playlist[i] !== activeSongNode) {
+          playlistObj.children[i].style.opacity = 0.7;
+        } else {
+          playlistObj.children[i].style.opacity = 1;
+        }
+      }
+
+      // Add the song to history:
+      if(isUploading || isSearchingInPlaylist) {  // do not add to the history
+        return;
+      }
+
+      addSongNodeToHistory(activeSongNode);
+
+
+      console.log("Loaded the Song Node");
+    }
+
+  </script>
+  
+</html>

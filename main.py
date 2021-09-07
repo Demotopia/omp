@@ -368,5 +368,5 @@ def send_user_search():
 
 
 web_site = Flask(__name__)
-# web_site.run(host='0.0.0.0', port=8080)
-web_site.run(debug=True)
+web_site.run(host='0.0.0.0', port=8080)
+# web_site.run(debug=True)
